@@ -1,12 +1,11 @@
-// فایل: src/components/ShahnamehTree.jsx
-
 import React from 'react';
-import FamilyTree from 'family-chart'; // حتما باید default import باشه
+import { FamilyTree } from 'family-chart';
+
 import data from '../data/shahnamehFamilyData.json';
 
 const nodeTemplate = ({ data }) => {
+  // رنگ بر اساس سلسله یا ویژگی ها
   let bgColor = '#888';
-
   if (data.attributes?.سلسله) {
     switch (data.attributes.سلسله) {
       case 'پیشدادی':
@@ -64,7 +63,7 @@ const nodeTemplate = ({ data }) => {
   );
 };
 
-export default function ShahnamehTree() {
+export default function ShahnamehFamilyChart() {
   return (
     <div style={{ width: '100%', height: '100vh', direction: 'rtl' }}>
       <FamilyTree
