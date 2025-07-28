@@ -12,9 +12,21 @@ const getNodeColor = node => {
   return '#888';
 };
 
-// طراحی نود سفارشی شامل رنگ، نام و لقب
 const renderCustomNode = ({ nodeDatum, toggleNode }) => {
   const color = getNodeColor(nodeDatum);
+
+  const spouseText = nodeDatum.spouse?.name
+    ? `همسر: ${nodeDatum.spouse.name}`
+    : null;
+  const daughtersTexts = Array.isArray(nodeDatum.daughters)
+    ? nodeDatum.daughters.map(d => `دختر: ${d.name}`)
+    : [];
+
+  const extraTexts = [];
+  if (nodeDatum.attributes?.لقب) extraTexts.push(nodeDatum.attributes.لقب);
+  if (spouseText) extraTexts.push(spouseText);
+  extraTexts.push(...daughtersTexts);
+
   return (
     <g>
       <circle
@@ -24,14 +36,33 @@ const renderCustomNode = ({ nodeDatum, toggleNode }) => {
         strokeWidth={1.5}
         onClick={toggleNode}
       />
-      <text fill="black" fontSize={12} textAnchor="middle" y={-25}>
+      {/* نام اصلی */}
+      <text fill="black" fontSize={12} textAnchor="middle" y={-10}>
         {nodeDatum.name}
       </text>
-      {nodeDatum.attributes?.لقب && (
-        <text fill="#555" fontSize={10} textAnchor="middle" y={35}>
-          {nodeDatum.attributes.لقب}
-        </text>
-      )}
+
+      {/* لقب، همسر، دخترها در یک خط */}
+      <text fill="#555" fontSize={10} textAnchor="middle" y={10}>
+        {extraTexts.map((txt, idx) => (
+          <tspan
+            key={idx}
+            x={idx * 80} // فاصله افقی هر قسمت (میتوانی تنظیم کنی)
+            style={{
+              fontStyle:
+                txt.startsWith('همسر') || txt.startsWith('دختر')
+                  ? 'italic'
+                  : 'normal',
+              fill: txt.startsWith('همسر')
+                ? '#C55'
+                : txt.startsWith('دختر')
+                ? '#AA55AA'
+                : '#555',
+            }}
+          >
+            {txt}
+          </tspan>
+        ))}
+      </text>
     </g>
   );
 };
