@@ -82,6 +82,7 @@ export default function ShahnamehTree() {
         orientation="vertical"
         renderCustomNodeElement={renderCustomNode}
         zoomable
+        scaleExtent={{ min: 0.5, max: 3 }}
         translate={{ x: window.innerWidth / 2, y: 100 }}
       />
     </div>
